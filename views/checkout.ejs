@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+        <h2 class="text-2xl font-semibold mb-4">Checkout</h2>
+        
+        <form action="/cart/place-order" method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Billing Details -->
+                <div>
+                    <h3 class="text-lg font-medium mb-2">Billing Details</h3>
+                    
+                    <label class="block text-sm font-medium">Full Name</label>
+                    <input name="Fullname" type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="John Doe">
+                    
+                    <label class="block text-sm font-medium">Email</label>
+                    <input name="Email" type="email" class="w-full p-2 border rounded-lg mb-3" placeholder="john@example.com">
+                    
+                    <label class="block text-sm font-medium">Address</label>
+                    <input name="Address" type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="123 Street, City">
+                    
+                    <label class="block text-sm font-medium">Phone</label>
+                    <input name="Phone" type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="+1234567890">
+                </div>
+                
+                <!-- Order Summary -->
+                <div>
+                    <h3 class="text-lg font-medium mb-2">Order Summary</h3>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="flex justify-between mb-2"><span>Subtotal:</span> <span>₹<%=totalprice %></span></p>
+                        <p class="flex justify-between mb-2"><span>Shipping:</span> <span>₹10.00</span></p>
+                        <hr class="my-2">
+                        <p class="flex justify-between font-semibold"><span>Total:</span> <span>₹<%=totalprice+10%></span></p>
+                    </div>
+                    
+                    <!-- Submit button inside the form -->
+                    <input type="hidden" name="totalPrice" id="totalPriceInput" value="<%= totalprice + 10 %>">
+
+                    <button type="submit" class="w-full mt-4 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">
+                        Place Order
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 shadow-md p-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-white">🛒 Your Cart</h1>
+        <a href="/shop" class="text-white bg-blue-500 px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition">Continue Shopping</a>
+    </header>
+    <main class="p-8">
+        <% if (cartProduct.length >0) { %>
+            
+     
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% cartProduct.forEach(item => { %>
+            <div class="bg-gray-800 p-4 shadow-lg rounded-lg flex flex-col items-center relative">
+                <img src="<%=item.image %> " alt="Product Name" class="w-full h-64 object-cover rounded-lg">
+                <div class="w-full text-white p-2 flex flex-col items-center">
+                    <h2 class="text-lg font-semibold"><%=item.name%></h2>
+                    <p class="text-gray-300">₹<%=item.price%></p>
+                    <div class="flex items-center mt-2 space-x-2">
+                        <button  class="bg-transparent px-2 py-1 rounded-md">-</button>
+                        <input name="quantity"  type="number" min="1" value="1" class=" quantity w-16 p-1 bg-transparent text-white border rounded-lg text-center">
+                        <button  class="bg-transparent px-2 py-1 rounded-md">+</button>
+                    </div>
+                    <form class="flex gap-4 mt-4" action="/cart/remove" method="POSt">
+                        <input type="hidden" name="item_id" value="<%=item._id %>">
+                        <button class="bg-red-500 px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition">Remove</button>
+                    </form>
+                </div>
+            </div>
+         <% }) %>
+        </div>
+        <a class="flex justify-center items-center mt-7" href="/cart/checkout">
+            <button class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition">
+                Proceed to Checkout
+            </button>
+        </a>
+        
+    <% }else { %>
+         <div class="div bg-transparent text-white">
+             <h2>No Items in your Cart</h3>
+         </div>
+    <% } %>
+    </main>
+
+<script>
+
+  
+</script>
+
+</body>
+</html>

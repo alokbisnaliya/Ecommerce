@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium E-Commerce Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?laptop,mouse,shoes') no-repeat center center/cover;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navigation Bar -->
+    <nav class="bg-black bg-opacity-80 py-4 fixed w-full top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-white">MyStore</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="/shop" class="hover:text-gray-300 transition">Shop</a>
+                <a href="/about" class="hover:text-gray-300 transition">About</a>
+                <a href="/contact" class="hover:text-gray-300 transition">Contact</a>
+            </div>
+            <div class="hidden md:flex space-x-4">
+                <% if (!token) { %>
+                    <a href="/login" class="bg-white text-black px-4 py-2 rounded hover:bg-gray-300 transition">Login</a>
+                    <a href="/register" class="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400 transition">Sign Up</a>
+                <% } else { %>
+                    <a href="/profile" class="bg-white text-black px-4 py-2 rounded hover:bg-gray-300 transition">Profile</a>
+                    <a href="/logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition">Logout</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="h-screen flex items-center justify-center text-center px-6">
+        <div class="bg-black bg-opacity-60 p-10 rounded-lg">
+            <h1 class="text-5xl font-bold mb-4">Welcome to MyStore</h1>
+            <p class="text-lg mb-6">Exclusive Collections, Unmatched Quality</p>
+            <a href="/shop" class="bg-yellow-500 text-black px-6 py-3 rounded font-semibold hover:bg-yellow-400 transition">Start Shopping</a>
+        </div>
+    </section>
+    
+    <!-- Featured Products -->
+    <section class="bg-white py-16 text-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-8">Featured Products</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <% products.forEach(product => { %>
+                    <div class="bg-gray-200 rounded-lg overflow-hidden shadow-lg">
+                        <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48  object-cover">
+                        <div class="p-4 text-center">
+                            <h3 class="text-xl font-semibold"><%= product.name %></h3>
+                            <p class="text-gray-600">$<%= product.price %></p>
+                            <button class="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Add to Cart</button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-black text-white text-center py-6">
+        <p>&copy; 2024 MyStore. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

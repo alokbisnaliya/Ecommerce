@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col p-6 space-y-4">
+        <h2 class="text-2xl font-bold mb-6">Hello, Admin</h2>
+        <nav class="space-y-4">
+            <a href="/owners" class="block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400 transition">Dashbord</a>
+            <a href="/owners/products" class="block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-400 transition">Manage Products</a>
+            <a href="/owners/orders" class="block bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-400 transition">Manage Orders</a>
+            <a href="/owners/allUsers" class="block bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-400 transition">Manage Users</a>
+            <a href="/logout" class="block bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+        
+        <!-- User Management Section -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">User Management</h1>
+        <div class="mb-4">
+            <form action="/owners/searchUser" method="GET" class="relative flex items-center">
+                <input type="email" name="email" placeholder="Search users... via Gmail"
+                    class="w-full p-2 pr-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-300 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                    🔍
+                </button>
+            </form>
+        </div>
+        
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <!-- <th class="border border-gray-300 px-4 py-2"><input type="checkbox"></th> -->
+                        <th class="border border-gray-300 px-4 py-2">User ID</th>
+                        <th class="border border-gray-300 px-4 py-2">Name</th>
+                        <th class="border border-gray-300 px-4 py-2">Email</th>
+                        <th class="border border-gray-300 px-4 py-2">Role</th>
+                        <th class="border border-gray-300 px-4 py-2">Status</th>
+                        <th class="border border-gray-300 px-4 py-2">Last Login</th>
+                        <th class="border border-gray-300 px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <% allUsers.forEach(user=>{ %>
+                <tbody>
+                    <tr>
+                        <!-- <td class="border border-gray-300 px-4 py-2"><input type="checkbox"></td> -->
+                        <td class="border border-gray-300 px-4 py-2"><%=user._id %></td>
+                        <td class="border border-gray-300 px-4 py-2"><%=user.Fullname %></td>
+                        <td class="border border-gray-300 px-4 py-2"><%=user.Email%></td>
+                        <td class="border border-gray-300 px-4 py-2">
+                           <%= user.role %>
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Active</button>
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">2024-02-15</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
+                            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <% }) %> 
+            </table>
+        </div>
+    </main>
+</body>
+</html>

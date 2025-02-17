@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex h-screen">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col p-6">
+        <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+        <nav class="space-y-4">
+            <a href="/owners" class="block bg-blue-500 text-white text-center py-2 rounded-md font-bold hover:bg-blue-400 transition">Dashboard</a>
+            
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Add New Product</h1>
+            <a href="/owners/products" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Back to Products</a>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto">
+            <form action="/owners/create" method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium">Product Image URL</label>
+                    <input type="text" name="image" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium">Product Name</label>
+                    <input type="text" name="name" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium">Product Price ($)</label>
+                    <input type="number" name="price" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md font-bold hover:bg-blue-400 transition">
+                    Add Product
+                </button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

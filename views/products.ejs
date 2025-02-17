@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    
+    <!-- Main Container -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white p-6 flex flex-col space-y-6">
+            <h2 class="text-2xl font-bold">Admin Panel</h2>
+            <nav class="space-y-4">
+                <a href="/owners" class="block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400 transition">Dashbord</a>
+                <a href="/owners/products" class="block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-400 transition">Manage Products</a>
+                <a href="/owners/orders" class="block bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-400 transition">Manage Orders</a>
+                <a href="/owners/allUsers" class="block bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-400 transition">Manage Users</a>
+                <a href="/logout" class="block bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">Logout</a>
+            </nav>
+            
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Manage Products</h1>
+                <a href="/owners/products/create" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">+ Add Product</a>
+            </div>
+            
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <% products.forEach(product => { %>
+                    <div class="bg-white rounded-lg shadow-md p-4 relative hover:shadow-lg transition">
+                        <div class="relative w-full h-60 bg-gray-300 rounded-md overflow-hidden">
+                            <img src="<%= product.image %>" alt="Product" class="h-full w-full object-cover">
+                            <span class="absolute top-2 right-2 bg-yellow-500 text-black px-2 py-1 text-xs font-bold rounded-md">$
+                                <%= product.price %>
+                            </span>
+                        </div>
+                        <h2 class="text-lg font-semibold mt-3 truncate"><%= product.name %></h2>
+                        
+                        <div class="mt-4 flex justify-between space-x-2">
+                            <a href="/owners/products/edit-product/<%= product._id %>" class="w-1/2 py-2 text-center bg-blue-500 text-white font-bold rounded-md hover:bg-blue-400">Edit</a>
+                            
+                            <form action="/owners/products/delete-product/<%= product._id %>" method="POST" class="w-1/2">
+                                <button type="submit" class="w-full py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-400">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </main>
+    </div>
+    
+</body>
+</html>

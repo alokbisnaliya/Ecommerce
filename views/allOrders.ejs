@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col p-6 space-y-4">
+        <h2 class="text-2xl font-bold mb-6">Hello, Admin</h2>
+        <nav class="space-y-4">
+            <a href="/owners" class="block bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400 transition">Dashboard</a>
+            <a href="/owners/products" class="block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-400 transition">Manage Products</a>
+            <a href="/owners/orders" class="block bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-400 transition">Manage Orders</a>
+            <a href="/owners/allUsers" class="block bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-400 transition">Manage Users</a>
+            <a href="/logout" class="block bg-gray-700 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition">Logout</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Orders Management</h1>
+        
+        <!-- Summary Section -->
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                <h2 class="text-xl font-semibold text-gray-800">Total Orders</h2>
+                <p class="text-2xl font-bold text-blue-600"><%= orders.length %></p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                <h2 class="text-xl font-semibold text-gray-800">Total Revenue</h2>
+                <p class="text-2xl font-bold text-green-600">$25,000</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                <h2 class="text-xl font-semibold text-gray-800">Pending Orders</h2>
+                <p class="text-2xl font-bold text-yellow-600">10</p>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 px-4 py-2">Order ID</th>
+                        <th class="border border-gray-300 px-4 py-2">Customer Name</th>
+                        <th class="border border-gray-300 px-4 py-2">Items</th>
+                        <th class="border border-gray-300 px-4 py-2">Total Price</th>
+                        <th class="border border-gray-300 px-4 py-2">Status</th>
+                        <th class="border border-gray-300 px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 text-blue-500 hover:underline cursor-pointer">
+                            <a href="/owners/orders/<%= order._id %>"><%= order._id %></a>
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2"><%= order.Fullname %></td>
+                        
+                        <% let items_name = []; %> 
+                        <% order.items.forEach(function(item) { %>
+                            <% if (item.product) { %>
+                                <% items_name.push(item.product.name); %>
+                            <% } %>
+                        <% }); %>  
+                        
+                        <td class="border border-gray-300 px-4 py-2"><%= items_name.join(', ') %></td>
+                        <td class="border border-gray-300 px-4 py-2"><%= order.totalPrice %></td>
+
+                        <!-- Status Form -->
+                        <td class="border border-gray-300 px-4 py-2">
+                            <form action="/owners/orders/status/<%= order._id %>" method="post" class="flex items-center space-x-2">
+                                <select name="status" class="bg-gray-100 border rounded px-2 py-1">
+                                    <option value="Processing"
+                                        <% if (order.orderStatus === "Processing") { %> 
+                                            selected 
+                                        <% } %>
+                                    >Processing</option>
+                                
+                                    <option value="Shipped"
+                                        <% if (order.orderStatus === "Shipped") { %> selected <% } %>
+                                    >Shipped</option>
+                                
+                                    <option value="Delivered"
+                                        <% if (order.orderStatus === "Delivered") { %> selected <% } %>
+                                    >Delivered</option>
+                                
+                                    <option value="Cancelled"
+                                        <% if (order.orderStatus === "Cancelled") { %> selected <% } %>
+                                    >Cancelled</option>
+                                </select>
+                                
+                                <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                                    Update
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>  
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
