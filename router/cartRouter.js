@@ -71,38 +71,46 @@ router.get('/checkout', async (req,res)=>{
 
 });
 
-router.post('/place-order',async (req,res)=>{
-  const { Fullname,Email,Address,Phone ,totalPrice} = req.body;
+router.post('/place-order', async (req, res) => {
+  const { Fullname, Email, Address, Phone, totalPrice } = req.body;
 
   try {
-    if(!Fullname||!Email||!Address||!Phone){
-      res.status(500).json({msg:"all feilds are required"})
-    }else{
-      const user = await usermodel.findOne({_id:req.user._id});
-      const order = await ordermodel.create({
-         Fullname,
-         Email,
-         Address,
-         Phone,
-         totalPrice
-       })
-      if(!order){
-        res.status(404).json({msg:"Cant Place Your Order"})
-      } 
-      order.user.push(user._id)
-      user.cart.forEach((item)=>{
-          order.items.push({product:item})
-      });
-      await order.save();
-      user.orders.push(order._id)
-      await user.save();
-      res.redirect('/shop')
+    if (!Fullname || !Email || !Address || !Phone) {
+      return res.status(400).json({ msg: "All fields are required" });
     }
+
+    // Find user
+    const user = await usermodel.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Create new order
+    const order = new ordermodel({
+      Fullname,
+      Email,
+      Address,
+      Phone,
+      totalPrice,
+      user: [user._id],
+      
+          
+    });
+    user.cart.forEach(prodId =>{
+      order.items.push(prodId)
+    })
+    await order.save();
+
+    user.orders.push(order._id);
+    await user.save();
+
+    return res.redirect('/shop')
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Server error" });
+    return res.status(500).json({ msg: "Server error" });
   }
-})
+});
+
 
 
 module.exports = router;

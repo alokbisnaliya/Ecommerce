@@ -6,42 +6,133 @@
     <title>User Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center py-10 px-4">
     
     <!-- Dashboard Container -->
-    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mt-10">
+    <div class="dashboard-container w-full max-w-4xl bg-gray-800 shadow-2xl rounded-2xl p-8 mt-10 border border-gray-700">
         
         <!-- Profile Section -->
-        <div class="flex items-center space-x-4 border-b pb-4">
-            <img src="https://via.placeholder.com/80" alt="Profile" class="w-20 h-20 rounded-full border">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-6 border-b border-gray-600 pb-6 text-center sm:text-left">
+            <img src="<%=user.image %>" alt="Profile" class="w-24 h-24 rounded-full border-4 border-blue-500 shadow-lg" id="profile-img">
             <div>
-                <h2 class="text-xl font-semibold">John Doe</h2>
-                <p class="text-gray-600">johndoe@example.com</p>
+                <h2 class="text-2xl font-bold text-white" id="profile-name"><%= user.Fullname %></h2>
+                <p class="text-gray-400" id="profile-email"><%= user.Email %></p>
             </div>
         </div>
         
         <!-- Navigation Tabs -->
-        <div class="flex justify-around mt-4 border-b pb-2 text-gray-600">
-            <button class="hover:text-blue-500">Orders</button>
-            <button class="hover:text-blue-500">Wishlist</button>
-            <button class="hover:text-blue-500">Settings</button>
+        <div class="flex flex-wrap justify-center sm:justify-around mt-6 border-b border-gray-600 pb-3 text-gray-400 font-semibold">
+            <button class="px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition" onclick="showSection('orders')">Orders</button>
+            <button class="px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition" onclick="showSection('wishlist')">Wishlist</button>
+            <button class="px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition" onclick="showSection('settings')">Settings</button>
         </div>
-
+     
         <!-- Orders Section -->
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Recent Orders</h3>
-            <div class="bg-gray-50 p-4 rounded-lg shadow">
-                <p class="text-sm text-gray-700">#12345 - Nike Shoes - $120</p>
-                <p class="text-sm text-gray-700">#12346 - Apple Watch - $350</p>
-                <p class="text-sm text-gray-700">#12347 - Samsung Phone - $800</p>
+        <div id="orders" class="mt-6">
+            <h3 class="text-xl font-semibold mb-3 text-white">Recent Orders</h3>
+            <div class="bg-gray-700 p-4 rounded-lg shadow-md animate-fadeIn space-y-4">
+                <% user.orders.forEach(order => { %>
+                <div class="order-card p-5 mb-4 rounded-lg bg-gray-800 shadow-lg hover:bg-gray-700 transition">
+                    <h4 class="text-lg font-semibold text-white mb-3">Order ID: <%= order._id %></h4>
+                    <div class="order-items space-y-3">
+                        <% order.items.forEach(item => { %>
+                            <div class="product-card flex flex-col sm:flex-row items-center space-x-4 border-b border-gray-600 pb-2 mb-3">
+                                <img src="<%= item.image ? item.image : 'https://via.placeholder.com/150' %>" alt="<%= item.name %>" class="w-16 h-16 rounded-lg shadow-md">
+                                <div class="flex flex-col text-center sm:text-left">
+                                    <p class="text-lg font-semibold text-white"><%= item.name %></p>
+                                    <p class="text-sm text-gray-400">Price: $<%= item.price %></p>
+                                    <p class="text-sm text-gray-400">Quantity: <%= item.quantity %></p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                    <div class="order-status mt-3 text-center">
+                        <p class="text-sm text-gray-400">Status: <%= order.orderStatus %></p>
+                    </div>
+                </div>
+                <% }) %>
             </div>
         </div>
-        
-        <!-- Logout Button -->
-        <div class="mt-6 text-center">
-            <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">Logout</button>
+
+        <!-- Wishlist Section -->
+        <div id="wishlist" class="mt-6 hidden animate-fadeIn">
+            <h3 class="text-xl font-semibold mb-3 text-white">Wishlist</h3>
+            <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+                <p class="text-sm text-gray-300 font-medium">Nike Shoes - $120</p>
+                <p class="text-sm text-gray-300 font-medium">Apple Watch - $350</p>
+            </div>
         </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="mt-6 hidden animate-fadeIn">
+            <h3 class="text-xl font-semibold mb-3 text-white">Settings</h3>
+            <button class="px-4 py-2 text-gray-300 bg-transparent border border-gray-500 rounded-lg hover:bg-gray-600 transition mb-4" onclick="toggleEditForm()">Edit</button>
+            <div id="edit-form" class="hidden">
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-300">Name</label>
+                        <input type="text" class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none" value="John Doe" id="edit-name">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-300">Email</label>
+                        <input type="email" class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none" value="johndoe@example.com" id="edit-email">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-300">Phone</label>
+                        <input type="text" class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none" value="+1234567890" id="edit-phone">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-300">Profile Image</label>
+                        <input type="file" class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none" id="edit-profile-img">
+                    </div>
+                    <button type="submit" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition">Save Changes</button>
+                </form>
+            </div>
+            <button class="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-lg hover:bg-red-600 transition mt-4" onclick="showLogoutPopup()">Logout</button>
+        </div>
+
+        <!-- Logout Popup -->
+        <div id="logout-popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+                <h3 class="text-lg text-white mb-4">Are you sure you want to logout?</h3>
+                <div class="flex justify-around">
+                    <button class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600" onclick="logout()">OK</button>
+                    <button class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-lg hover:bg-gray-500" onclick="closeLogoutPopup()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
     </div>
     
+    <script>
+        function showSection(section) {
+            document.getElementById('orders').classList.add('hidden');
+            document.getElementById('wishlist').classList.add('hidden');
+            document.getElementById('settings').classList.add('hidden');
+            document.getElementById(section).classList.remove('hidden');
+        }
+
+        function toggleEditForm() {
+            var editForm = document.getElementById('edit-form');
+            if (editForm.classList.contains('hidden')) {
+                editForm.classList.remove('hidden');
+            } else {
+                editForm.classList.add('hidden');
+            }
+        }
+
+        function showLogoutPopup() {
+            document.getElementById('logout-popup').classList.remove('hidden');
+        }
+
+        function closeLogoutPopup() {
+            document.getElementById('logout-popup').classList.add('hidden');
+        }
+
+        function logout() {
+            alert('Logged out');
+            closeLogoutPopup();
+        }
+    </script>
 </body>
 </html>
